@@ -1,0 +1,27 @@
+version: '3'
+
+volumes:
+  onlyoffice_logs:
+  onlyoffice_lib:
+  onlyoffice_db:
+networks:
+  Gib:
+    external: true
+
+services:
+  onlyoffice:
+    container_name: onlyoffice
+    image: onlyoffice/documentserver
+    networks:
+      - Gib
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+    ports:
+      - 84:80
+    volumes:
+      - onlyoffice_logs:/var/log/onlyoffice
+      - /home/gib/Documents/Office:/var/www/onlyoffice/Data
+      - onlyoffice_lib:/var/lib/onlyoffice
+      - onlyoffice_db:/var/lib/postgresql
+

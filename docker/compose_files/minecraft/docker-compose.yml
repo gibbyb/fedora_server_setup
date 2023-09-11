@@ -1,0 +1,33 @@
+version: '3'
+services:
+  minecraft:
+    image: itzg/minecraft-server:latest
+    container_name: minecraft
+    hostname: minecraft
+    domainname: mc.${DOMAIN}
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.14
+    ports:
+      - 25565:25565
+    env_file:
+      - ../user_variables.env
+    environment:
+      - EULA=TRUE
+      - MAX_MEMORY=4G
+      - VIEW_DISTANCE=16
+      - SIMULATION_DISTANCE=12
+      - MAX_PLAYERS=20
+      - MOTD=§l§cGib's§r §nServer
+      - ALLOW_NETHER=TRUE
+      - ENABLE_COMMAND_BLOCK=true
+      - ALLOW_FLIGHT=TRUE
+    volumes:
+      - /home/gib/Documents/Minecraft:/data
+    tty: true
+    restart: unless-stopped
+    stdin_open: true
+networks:
+  ${NETWORK_NAME}:
+    external: true
+

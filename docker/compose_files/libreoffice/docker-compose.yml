@@ -1,0 +1,26 @@
+version: "2.1"
+volumes:
+  libreoffice_config:
+networks:
+  Gib:
+    external: true
+services:
+  libreoffice:
+    image: lscr.io/linuxserver/libreoffice:latest
+    container_name: libreoffice
+    networks:
+      Gib:
+        ipv4_address: 172.20.0.20
+    security_opt:
+      - seccomp:unconfined
+    tty: true
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Chicago
+    volumes:
+      - libreoffice_config:/config
+    ports:
+      - 3000:3000
+      - 3001:3001
+    restart: unless-stopped

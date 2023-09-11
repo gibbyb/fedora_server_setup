@@ -1,0 +1,95 @@
+version: 
+services:  
+  <SERVICES_HERE>: 
+    image: 
+    container_name: 
+    hostname:
+    domainname: .${DOMAIN}
+    dns:
+      - 
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.
+    ports:
+      - 
+      - 
+    env_file:
+      - ../user_variables.env
+    environment:
+      - 
+      - 
+      -
+    cap_add:
+      -
+    depends_on:
+      - 
+    volumes: 
+      - volume_name:/path/in/container
+      - /path/on/host:/path/in/container
+    tty: true
+    restart: unless-stopped
+networks:
+  ${NETWORK_NAME}:
+    external: true  
+volumes:
+  volume_name:
+
+
+# IP Configuration:
+#
+# 192.168.0.1 - Default Gateway. The Router.
+# 192.168.0.2 - Host machine. Possibly others.
+# 192.168.0.3 - Pi-Hole X
+# 192.168.0.4 - Caddy X
+# 192.168.0.5 - Wireguard X
+# 192.168.0.6 - Portainer X
+# 192.168.0.7 - Nextcloud X
+# 192.168.0.8 - Nextcloud DB X
+# 192.168.0.9 - GitTea X
+#192.168.0.10 - Vaultwarden X
+#192.168.0.11 - Meshcentral X 
+#192.168.0.12 - Home Assistant X
+#192.168.0.13 - Searxng X
+#192.168.0.14 - Minecraft X
+#192.168.0.15 - Plex X
+#192.168.0.16 - QbittorrentVPN X
+#192.168.0.17 - Prowlarr X
+#192.168.0.18 - Lidarr X
+#192.168.0.19 - Radarr X
+#192.168.0.20 - Sonarr X
+#192.168.0.21 - MySQL X
+#192.168.0.22 - Adminer X
+#192.168.0.23 - PHP Server X
+#192.168.0.24 - Node X
+#192.168.0.25 - Rustdesk X
+#192.168.0.26 - 
+#
+
+#
+#
+#
+#
+# 172.20.0.2 - Pihole X
+# 172.20.0.3 - Caddy X
+# 172.20.0.4 - Portainer X
+# 172.20.0.5 - Wireguard X
+# 172.20.0.6 - Nextcloud X
+# 172.20.0.7 - Nextcloud DB X
+# 172.20.0.8 - Gitea X
+# 172.20.0.9 - Vaultwarden X
+# 172.20.0.10 - Meshcentral X
+# 172.20.0.11 - Home Assistant X
+# 172.20.0.12 - Searxng X
+# 172.20.0.13 - Minecraft X
+# 172.20.0.14 - Plex X
+# 172.20.0.15 - QbittorrentVPN X
+# 172.20.0.16 - Prowlarr X
+# 172.20.0.17 - lidarr X
+# 172.20.0.18 - radarr X
+# 172.20.0.19 - sonarr X
+# 172.20.0.20 - MySQL X
+# 172.20.0.21 - Adminer X
+# 172.20.0.22 - PHP Server X
+# 172.20.0.23 - Node X
+# 172.20.0.24 - 
+# 172.20.0.25 - 

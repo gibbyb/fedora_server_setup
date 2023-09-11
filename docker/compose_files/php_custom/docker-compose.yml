@@ -1,0 +1,19 @@
+version: '3'
+services:
+  php:
+    image: php:7.4-fpm
+    container_name: php_custom
+    hostname: php_custom
+    domainname: php.${DOMAIN}
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.23
+    env_file:
+      - ../user_variables.env
+    volumes:
+      - /home/gib/Documents/Web:/var/www/html
+    tty: true
+    restart: unless-stopped
+networks:
+  ${NETWORK_NAME}:
+    external: true 

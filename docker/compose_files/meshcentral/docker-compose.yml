@@ -1,0 +1,37 @@
+version: "3"
+services: 
+  meshcentral: 
+    image: typhonragewind/meshcentral:latest
+    container_name: meshcentral
+    hostname: meshcentral
+    domainname: mesh.${DOMAIN}
+    networks: 
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.11
+    ports:
+      - 443:443
+    env_file:
+      - ../user_variables.env
+    environment:
+      - HOSTNAME=mesh.${DOMAIN}
+      - REVERSE_PROXY=${IP_PREFIX}.4
+      - REVERSE_PROXY_TLS_PORT=443
+      - IFRAME=true
+      - ALLOW_NEW_ACCOUNTS=false
+      - WEBRTC=true
+      - BACKUPS_PW=${MESH_BACKUPS_PW}
+      - BACKUP_INTERVAL=24 # Interval in hours for the autobackup function
+      - BACKUP_KEEP_DAYS=10 #number of days of backups the function keeps
+    volumes: 
+      - meshcentral_data:/opt/meshcentral/meshcentral-data
+      - meshcentral_user_files:/opt/meshcentral/meshcentral-files
+      - meshcentral_backups:/opt/meshcentral/meshcentral-backups 
+    tty: true
+    restart: unless-stopped
+networks:
+  ${NETWORK_NAME}:
+    external: true  
+volumes:
+  meshcentral_data:
+  meshcentral_user_files:
+  meshcentral_backups:

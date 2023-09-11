@@ -1,0 +1,57 @@
+version: '2'
+services:
+  nextcloud_db:
+    image: mariadb:10.6
+    container_name: nextcloud_db
+    hostname: nextcloud_db
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.8
+    env_file:
+      - ../user_variables.env
+    environment:
+      - MYSQL_DATABASE=${NEXTCLOUD_DB}
+      - MYSQL_USER=${NEXTCLOUD_DB_USER}
+      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PW}
+      - MYSQL_ROOT_PASSWORD=${NEXTCLOUD_DB_ROOT_PW}
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    tty: true
+    restart: unless-stopped
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    hostname: nextcloud
+    domainname: cloud.${DOMAIN}
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.7
+    ports:
+      - 80:80
+    env_file:
+      - ../user_variables.env
+    environment:
+      - MYSQL_HOST=nextcloud_db
+      - MYSQL_DATABASE=${NEXTCLOUD_DB}
+      - MYSQL_USER=${NEXTCLOUD_DB_USER}
+      - MYSQL_PASSWORD=${NEXTCLOUD_DB_PW}
+      - COLLABORA_SECCOMP_DISABLED=true
+      - NEXTCLOUD_TRUSTED_DOMAINS=cloud.${DOMAIN}
+      - PHP_MEMORY_LIMIT=4G
+      - PHP_UPLOAD_LIMIT=2G
+    links:
+      - nextcloud_db
+    depends_on: 
+      - nextcloud_db
+    volumes:
+      - nextcloud:/var/www/html
+    tty: true
+    restart: unless-stopped
+networks:
+  Gib:
+    external: true
+volumes:
+  nextcloud:
+  db:

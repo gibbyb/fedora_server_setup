@@ -1,0 +1,7 @@
+  'trusted_domains' => 
+  array (
+    0 => 'domain.ltd',
+  ),
+
+  'overwrite.cli.url' => 'https://domain.ltd',
+  'overwriteprotocol' => 'https',

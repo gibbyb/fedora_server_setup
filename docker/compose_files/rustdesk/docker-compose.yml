@@ -1,0 +1,31 @@
+version: '3'
+services:
+  rustdesk-server:
+    image: rustdesk/rustdesk-server-s6:latest
+    container_name: rustdesk
+    hostname: rustdesk
+    domainname: rustdesk.${DOMAIN}
+    networks: 
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.25
+    ports:
+      - 21115:21115
+      - 21116:21116
+      - 21116:21116/udp
+      - 21117:21117
+      - 21118:21118
+      - 21119:21119
+    env_file:
+      - ../user_variables.env
+    environment:
+      - "RELAY=rustdesk.${DOMAIN}:21117"
+      - "ENCRYPTED_ONLY=1"
+    volumes:
+      - rustdesk_data:/data
+    tty: true
+    restart: unless-stopped
+networks:
+  ${NETWORK_NAME}:
+    external: true  
+volumes:
+  rustdesk_data:

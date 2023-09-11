@@ -1,0 +1,5 @@
+# Environment variables
+user_variables.env
+
+# Caddyfile
+Caddyfile

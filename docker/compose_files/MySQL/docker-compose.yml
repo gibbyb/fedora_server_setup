@@ -1,0 +1,43 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    hostname: mysql
+    domainname: mysql.${DOMAIN}
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.21
+    ports:
+      - 3306:3306
+    env_file:
+      - ../user_variables.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PW}
+      MYSQL_DATABASE: ${GITEA_DB_NAME}
+      MYSQL_USER: ${GITEA_DB_USER}
+      MYSQL_PASSWORD: ${GITEA_DB_PW}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    tty: true
+    restart: unless-stopped
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    hostname: adminer
+    domainname: adminer.${DOMAIN}
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.22
+    ports:
+      - 8080:8080
+    env_file:
+      - ../user_variables.env
+    tty: true
+    restart: unless-stopped
+networks:
+  ${NETWORK_NAME}:
+    external: true
+volumes:
+  mysql_data:

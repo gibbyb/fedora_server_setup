@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    hostname: caddy
+    networks: 
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.4
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    env_file:
+      - ../user_variables.env
+    volumes:
+      - /home/gib/Documents/Caddyfile:/etc/caddy/Caddyfile
+      - /home/gib/Documents/Web:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    tty: true
+    restart: unless-stopped
+networks:
+  ${NETWORK_NAME}:
+    external: true
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,37 @@
+version: '3.7'
+services:
+  searxng:
+    image: searxng/searxng:latest
+    container_name: searxng
+    hostname: searxng
+    domainname: search.${DOMAIN}
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.13
+    ports:
+      - "8080:8080"
+    env_file:
+      ../user_variables.env
+    environment:
+      - SEARXNG_BASE_URL=https://search.${DOMAIN}
+      - AUTOCOMPLETE=google
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - SETGID
+      - SETUID
+    volumes:
+      - searxng_etc:/etc/searxng
+    tty: true
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "1"
+networks:
+  ${NETWORK_NAME}:
+    external: true
+volumes:
+  searxng_etc:

@@ -1,0 +1,36 @@
+# moodiness boastful pedicure flier turbine subwoofer extended mascot
+version: "3.8"
+
+services:
+  nextcloud_aio:
+    image: nextcloud/all-in-one:latest
+    container_name: nextcloud-aio-mastercontainer
+    hostname: nextcloud_aio
+    init: true
+    networks: 
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.7
+    ports:
+     # - "80:80"     # Can be removed when using Caddy apparently but idk.
+      - "8080:8080"
+     # - "8443:8443" # Can be removed when using Caddy apparently but idk.
+    env_file: 
+      - ../user_variables.env
+    environment:
+      - APACHE_PORT=11000
+      - APACHE_IP_BINDING=0.0.0.0
+      - COLLABORA_SECCOMP_DISABLED=true
+      - NEXTCLOUD_UPLOAD_LIMIT=30G
+      - NEXTCLOUD_MEMORY_LIMIT=4096M
+      - SKIP_DOMAIN_VALIDATION=true
+    volumes:
+      - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+
+networks:
+  ${NETWORK_NAME}:
+    external: true
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer

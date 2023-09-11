@@ -1,0 +1,136 @@
+# REMOVE THIS LINE & RENAME THIS FILE TO Caddyfile WHEN YOU HAVE ADDED YOUR DOMAIN & MADE ANY CHANGES OR ADDITIONS NEEDED
+
+port.<YOUR_DOMAIN> {
+	encode gzip
+	reverse_proxy portainer:9443 {
+		header_up Host {upstream_hostport}
+		transport http {
+			tls_insecure_skip_verify
+		}
+	}
+}
+
+vault.<YOUR_DOMAIN> {
+	encode gzip
+	reverse_proxy /notifications/hub vaultwarden:3012
+	reverse_proxy vaultwarden:80 {
+		header_up X-Real-IP {remote_host}
+		header_down -X-Frame-Options
+		header_down -Content-Security-Policy
+	}
+}
+
+cloud.<YOUR_DOMAIN> {
+	header {
+		Strict-Transport-Security max-age=31536000;
+	}
+	redir /.well-known/carddav /remote.php/dav 301
+	redir /.well-known/caldav /remote.php/dav 301
+	reverse_proxy nextcloud:80
+}
+
+pihole.<YOUR_DOMAIN> {
+	encode zstd gzip
+	rewrite * /admin{uri}
+	reverse_proxy pihole:80 {
+		header_up X-Real-IP {remote_host}
+		header_down -X-Frame-Options
+		header_down -Content-Security-Policy
+	}
+}
+
+adminer.<YOUR_DOMAIN> {
+    reverse_proxy adminer:8080 {
+        header_down -X-Frame-Options
+	header_down -Content-Security-Policy
+    }
+}
+
+home.<YOUR_DOMAIN> {
+    reverse_proxy homeassistant:8123 {
+    	header_up X-Real-IP {remote_host}
+		header_down -X-Frame-Options
+        header_down -Content-Security-Policy
+    }
+}
+
+mesh.<YOUR_DOMAIN> {
+    reverse_proxy meshcentral:443 {
+        header_up X-Real-IP {remote_host}
+        header_up Host {upstream_hostport}
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+}
+
+mc.<YOUR_DOMAIN> {
+	reverse_proxy minecraft:25565
+}
+
+wiredworld.<YOUR_DOMAIN> {
+	root * /var/www/html/WiredWorld
+	encode gzip
+	file_server
+	php_fastcgi php_custom:9000
+}
+
+<YOUR_DOMAIN> {
+	reverse_proxy node_gibbyb:3000
+}
+
+search.<YOUR_DOMAIN> {
+    reverse_proxy searxng:8080 {
+		header_up X-Real-IP {remote_host}
+		header_down -X-Frame-Options
+		header_down -Content-Security-Policy
+        }
+}
+
+git.<YOUR_DOMAIN> {
+    reverse_proxy gitea:3000 {
+		header_up X-Real-IP {remote_host}
+		header_down -X-Frame-Options
+		header_down -Content-Security-Policy
+        }
+}
+
+plex.<YOUR_DOMAIN> { 
+    reverse_proxy plex:32400
+}
+
+plexdl.<YOUR_DOMAIN> {
+    reverse_proxy qbittorrentvpn:6969
+}
+
+dlmovies.<YOUR_DOMAIN> {
+    reverse_proxy radarr:7878
+}
+
+dltv.<YOUR_DOMAIN> {
+    reverse_proxy sonarr:8989
+}
+
+dlmusic.<YOUR_DOMAIN> {
+    reverse_proxy lidarr:8686
+}
+
+prowlarr.<YOUR_DOMAIN> {
+    reverse_proxy prowlarr:9696
+}
+
+wg.<YOUR_DOMAIN> {
+    reverse_proxy wireguard:51820
+}
+
+rustdesk.<YOUR_DOMAIN> {
+    reverse_proxy rustdesk:21117
+}
+
+php.<YOUR_DOMAIN> {
+    reverse_proxy php_custom:9000
+}
+
+mysql.<YOUR_DOMAIN> {
+    reverse_proxy mysql:3306
+}
