@@ -1,0 +1,23 @@
+version: '3'
+services:  
+  collabora_code: 
+    image: collabora/code:latest
+    container_name: collabora_code
+    hostname: collabora_code
+    domainname: office.gibbyb.com
+    networks:
+      Gib:
+        ipv4_address: 172.20.0.15
+    ports:
+      - "9980:9980"
+    environment:
+      - extra_params="--o:ssl.enable=false"
+    cap_add:
+      - MKNOD
+    tty: true
+    restart: unless-stopped
+networks:
+  Gib:
+    external: true
+
+

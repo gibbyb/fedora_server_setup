@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  cryptpad:
+    image: "promasu/cryptpad:latest"
+    container_name: cryptpad
+    hostname: cryptpad
+    domainname: office.${DOMAIN}
+    networks:
+      ${NETWORK_NAME}:
+        ipv4_address: ${IP_PREFIX}.26
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - ../user_variables.env
+    environment:
+      - CPAD_MAIN_DOMAIN=office.${DOMAIN}
+      - CPAD_SANDBOX_DOMAIN=sandbox.office.${DOMAIN}
+    volumes:
+      - cryptpad_blob:/cryptpad/blob
+      - cryptpad_block:/cryptpad/block
+      - cryptpad_customize:/cryptpad/customize
+      - cryptpad_data:/cryptpad/data
+      - cryptpad_datastore:/cryptpad/datastore
+      - cryptpad_configjs:/cryptpad/config/config.js
+    expose:
+      - "80"
+      - "443"
+    tty: true
+    restart: unless-stopped
+    ulimits:
+      nofile:
+        soft: 1000000
+        hard: 1000000
+networks:
+  ${NETWORK_NAME}:
+    external: true  
+volumes:
+  cryptpad_blob:
+  cryptpad_block:
+  cryptpad_customize:
+  cryptpad_data:
+  cryptpad_datastore:
+  cryptpad_configjs:
