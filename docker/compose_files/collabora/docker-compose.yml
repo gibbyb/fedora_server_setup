@@ -11,7 +11,9 @@ services:
     ports:
       - "9980:9980"
     environment:
-      - extra_params="--o:ssl.enable=false"
+      - extra_params="--o:ssl.enable=true"
+      - DONT_GEN_SSL_CERT="true"
+      - server_name="collabora_code"
     cap_add:
       - MKNOD
     tty: true
